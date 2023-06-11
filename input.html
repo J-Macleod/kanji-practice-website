@@ -1,0 +1,99 @@
+<html>
+<head>
+    <title>Input Page</title>
+    <link rel="icon" href="images/icon.png">
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        li {
+            font-size: 30px;
+            display: inline;
+        }
+        p {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        label {
+            font-size: 20px;
+        }
+    </style>
+    <script>
+        function savedAlert(english_data, hiragana_data, kanji_data) {
+            window.alert("English: " + english_data + "\n" + "Hiragana: " + hiragana_data + "\n" + "Kanji: " + kanji_data)
+        }
+
+        function setData(dataName, data) {
+            localStorage.setItem(dataName, data)
+        }
+
+        function getData(dataName) {
+            data = localStorage.getItem(dataName)
+            return data
+        }
+
+        function saveNewData(english_data, hiragana_data, kanji_data, english_list_nstatus, hiragana_list_nstatus, kanji_list_nstatus, active_list_nstatus) {
+            if (english_list_nstatus == null && hiragana_list_nstatus == null && kanji_list_nstatus == null) {
+                english_list = []
+                english_list.push(english_data)
+                setData("english_list", english_list)
+
+                hiragana_list = []
+                hiragana_list.push(hiragana_data)
+                setData("hiragana_list", hiragana_list)
+
+                kanji_list = []
+                kanji_list.push(kanji_data)
+                setData("kanji_list", kanji_list)
+
+                active_list = []
+                active_list.push(false)
+                setData("active_list", active_list)
+                location.reload()
+            }
+            else {
+                let english_list = getData("english_list").split(",")
+                let hiragana_list = getData("hiragana_list").split(",")
+                let kanji_list = getData("kanji_list").split(",")
+                let active_list = getData("active_list").split(",")
+
+                english_list.push(english_data)
+                setData("english_list", english_list)
+
+                hiragana_list.push(hiragana_data)
+                setData("hiragana_list", hiragana_list)
+
+                kanji_list.push(kanji_data)
+                setData("kanji_list", kanji_list)
+
+                active_list.push(false)
+                setData("active_list", active_list)
+                location.reload()
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1 style="font-size:60px; text-align: center;">Kanji Practice</h1>
+    <ul>
+        <li><a href="practice.html">Practice</a></li>
+        <li> | </li>
+        <li><a href="input.html">Input</a></li>
+        <li> | </li>
+        <li><a href="list.html">List</a></li>
+    </ul>
+    <h2 style="font-size:36px; text-align: center;">Input new data</h2>
+    <p><label for="englishtext">English:</label></br>
+    <input type="text" id="englishtext" name="englishtext" size="60" minlength="1"></p></br>
+    <p><label for="hiraganatext">Hiragana / Katakana:</label></br>
+    <input type="text" id="hiraganatext" name="hiraganatext" size="60" minlength="1"></p></br>
+    <p><label for="kanjitext">Kanji:</label></br>
+    <input type="text" id="kanjitext" name="kanjitext" size="60" minlength="1"></p></br>
+    <p><input type="button" onclick="saveNewData(document.getElementById('englishtext').value, document.getElementById('hiraganatext').value, document.getElementById('kanjitext').value, getData('english_list'), getData('hiragana_list'), getData('kanji_list'), getData('active_list'))" name="datasubmitbutton" id="datasubmitbutton" value="Submit"></p>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<html>
+<head>
+    <title>List Page</title>
+    <link rel="icon" href="images/icon.png">
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        li {
+            font-size: 30px;
+            display: inline;
+        }
+        table, th, td {
+            border: 1px solid;
+        }   
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+    <script>
+        function setData(dataName, data) {
+            localStorage.setItem(dataName, data)
+        }
+
+        function getData(dataName) {
+            data = localStorage.getItem(dataName)
+            return data
+        }
+
+        function setActiveStatus(index) {
+            let active_list = getData("active_list").split(",")
+
+            if (active_list[index] == "true") {
+                active_list[index] = "false"
+            } 
+            else if (active_list[index] == "false") {
+                active_list[index] = "true"
+            }
+
+            setData("active_list", active_list)
+        }
+
+        function deletePhrase(index) {
+            let english_list = getData("english_list").split(",")
+            let hiragana_list = getData("hiragana_list").split(",")
+            let kanji_list = getData("kanji_list").split(",")
+            let active_list = getData("active_list").split(",")
+
+            english_list.splice(index, 1)
+            setData("english_list", english_list)
+
+            hiragana_list.splice(index, 1)
+            setData("hiragana_list", hiragana_list)
+
+            kanji_list.splice(index, 1)
+            setData("kanji_list", kanji_list)
+
+            active_list.splice(index, 1)
+            setData("active_list", active_list)
+            
+            location.reload()
+        }
+    </script>
+</head>
+<body>
+    <h1 style="font-size:60px; text-align: center;">Kanji Practice</h1>
+    <ul>
+        <li><a href="practice.html">Practice</a></li>
+        <li> | </li>
+        <li><a href="input.html">Input</a></li>
+        <li> | </li>
+        <li><a href="list.html">List</a></li>
+    </ul>
+    <h2 style="font-size:36px; text-align: center;">Edit list</h2>
+    <div id="listtable"></div>
+    <script src="js/listscript.js"></script>
+</body>
+</html>

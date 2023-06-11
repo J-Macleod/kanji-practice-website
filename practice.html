@@ -1,0 +1,131 @@
+<html>
+<head>
+    <title>Practice Page</title>
+    <link rel="icon" href="images/icon.png">
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        li {
+            font-size: 30px;
+            display: inline;
+        }
+        #kanjibox {
+            margin: auto;
+            width: 800px;
+            border: 3px solid black;
+            background-color: rgb(200, 200, 200);
+        }
+        #kanjistyle {
+            font-size: 56px;
+            text-align: center;
+            margin-top: 15px;
+        }
+        #hiraganastyle {
+            font-size: 30px;
+            text-align: center;
+        }
+        #answerinput {
+            font-size: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body onkeydown="isKeyPressed(event)">
+    <h1 style="font-size:60px; text-align: center;">Kanji Practice</h1>
+    <ul>
+        <li><a href="practice.html">Practice</a></li>
+        <li> | </li>
+        <li><a href="input.html">Input</a></li>
+        <li> | </li>
+        <li><a href="list.html">List</a></li>
+    </ul>   
+    </br>
+    <div id="kanjibox"></div>
+    <script>
+        function setData(dataName, data) {
+            localStorage.setItem(dataName, data)
+        }
+
+        function getData(dataName) {
+            data = localStorage.getItem(dataName)
+            return data
+        }
+
+        function getRandomData(randmax) {
+            let index = Math.floor(Math.random() * randmax)
+            return index
+        }
+
+        function insertBoxData() {
+            let english_list = getData("english_list").split(",")
+            let hiragana_list = getData("hiragana_list").split(",")
+            let kanji_list = getData("kanji_list").split(",")
+            let active_list =  getData("active_list").split(",") 
+            let active_english_list = []
+            let active_hiragana_list = []
+            let active_kanji_list = []
+
+            for (let i = 0; i < english_list.length; i++) {
+                if (active_list[i] == "true") {
+                    active_english_list.push(english_list[i])
+                    active_hiragana_list.push(hiragana_list[i])
+                    active_kanji_list.push(kanji_list[i])
+                }
+            }
+
+            let index = getRandomData(active_english_list.length)
+            setData("cur_random_index", index)
+
+            let box_code_string = ""
+            
+            if (active_english_list.length > 2) {
+                box_code_string = "<p id='kanjistyle'>"+active_kanji_list[index]+"</p><p style='text-align: center; margin-top: -15px;''><input id='answerinput' type='text'><div id='hint' style='visibility: hidden;''></p><p id='hiraganastyle'>"+active_hiragana_list[index]+" - "+active_english_list[index]+"</div></p>"
+            } 
+            else {
+                box_code_string = "<p id='hiraganastyle'>You need more selected from list to start</p>"
+            }
+
+            document.getElementById('kanjibox').innerHTML = box_code_string
+        }
+
+        function isKeyPressed(event) {
+            if (event.shiftKey) {
+                if (document.getElementById("hint").style.visibility != "hidden") {
+                    document.getElementById("hint").style.visibility="hidden";
+                }
+                else {
+                    document.getElementById("hint").style.visibility="visible";
+                }
+            }
+
+            if (event.keyCode === 13) {
+                let english_list = getData("english_list").split(",")
+                let hiragana_list = getData("hiragana_list").split(",")
+                let kanji_list = getData("kanji_list").split(",")
+                let active_list =  getData("active_list").split(",") 
+                let active_english_list = []
+                let active_hiragana_list = []
+                let active_kanji_list = []
+
+                for (let i = 0; i < english_list.length; i++) {
+                    if (active_list[i] == "true") {
+                        active_english_list.push(english_list[i])
+                        active_hiragana_list.push(hiragana_list[i])
+                        active_kanji_list.push(kanji_list[i])
+                    }
+                }
+
+                let cur_random_index = getData("cur_random_index")
+                if (active_hiragana_list[cur_random_index] == document.getElementById('answerinput').value) {
+                    location.reload()
+                }
+            }
+        }
+        window.onload = insertBoxData()
+    </script>
+</body>
+</html>
